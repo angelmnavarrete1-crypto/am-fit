@@ -302,7 +302,7 @@ var AMEAN=(function(){
   }
   function look(code){
     var ctl=window.AbortController?new AbortController():null,to=setTimeout(function(){ctl&&ctl.abort();},3500);
-    return fetch('https://world.openfoodfacts.org/api/v2/product/'+code+'.json?fields=code,product_name,product_name_de,brands,nutriments,serving_quantity,quantity,categories_tags',ctl?{signal:ctl.signal}:{})
+    return fetch('https://world.openfoodfacts.org/api/v2/product/'+code+'.json?fields=code,product_name,product_name_de,brands,nutriments,serving_quantity,quantity,categories_tags,image_front_small_url,image_small_url',ctl?{signal:ctl.signal}:{})
       .then(function(r){return r.json();}).then(function(j){clearTimeout(to);return j&&j.status===1?j.product:null;}).catch(function(){clearTimeout(to);return null;});}
   function pname(p,code){return p?(p.product_name_de||p.product_name||'Produkt')+(p.brands?' · '+String(p.brands).split(',')[0]:''):'Code '+code;}
   function drawTray(){var L=document.getElementById('scL');L.innerHTML='';ITEMS.slice().reverse().forEach(function(x){var c=document.createElement('span');c.className='chip';c.innerHTML='<i>'+(x.qty>1?x.qty+'×':'✓')+'</i>';c.appendChild(document.createTextNode(x.name));L.appendChild(c);});
