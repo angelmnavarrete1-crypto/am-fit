@@ -200,7 +200,7 @@
 #scan .shut:active i{transform:scale(.9)}
 #scan .shut svg{position:absolute;inset:0;width:78px;height:78px;transform:rotate(-90deg)}
 #scan .shut circle.p{transition:stroke-dasharray .1s linear}
-#scan.photo .shut{display:block}#scan.photo .win{display:none}#scan.photo #scK{display:none!important}#scan.photo .hint{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 178px);left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:86vw;padding:9px 16px;border-radius:16px;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:14.5px}
+#scan .gal{position:absolute;left:calc(50% - 128px);bottom:calc(env(safe-area-inset-bottom,0px) + 47px);width:56px;height:56px;border-radius:16px;border:0;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);display:none;padding:15px}#scan .gal svg{width:26px;height:26px;display:block}#scan.photo .gal{display:block}#scan.photo .shut{display:block}#scan.photo .win{display:none}#scan.photo #scK{display:none!important}#scan.photo .hint{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 178px);left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:86vw;padding:9px 16px;border-radius:16px;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:14.5px}
 #scan .frz{position:absolute;inset:0;background:#000 center/cover no-repeat;display:none}
 #scan.shot .frz{display:block}#scan.shot .frz:after{content:"";position:absolute;left:0;right:0;top:-30%;height:30%;background:linear-gradient(180deg,transparent,rgba(255,255,255,.45),transparent);animation:scY 1.1s ease-in-out infinite}
 @keyframes scY{to{top:100%}}
@@ -216,7 +216,7 @@
   <div class="top"><button class="rb" id="scX" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <b>Barcode scannen</b>
     <button class="rb hide" id="scT" aria-label="Licht"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l-1 6h-4zM10 8h4v3l-1 11h-2l-1-11z"/></svg></button></div>
-  <div class="frz" id="scZ"></div><div class="flashw"></div><div class="modes" id="scMo"><button data-m="food">Essen</button><button data-m="shop">Einkauf</button><button data-m="code">Barcode</button></div><button class="shut" id="scS" aria-label="Foto"><svg viewBox="0 0 78 78"><circle cx="39" cy="39" r="36" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="4"/><circle class="p" id="scP" cx="39" cy="39" r="36" fill="none" stroke="#FFD60A" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 227"/></svg><i></i></button><div class="hint">Strichcode in den Rahmen halten<small>Er wird automatisch erkannt</small></div>
+  <div class="frz" id="scZ"></div><div class="flashw"></div><div class="modes" id="scMo"><button data-m="food">Essen</button><button data-m="shop">Einkauf</button><button data-m="code">Barcode</button></div><button class="gal" id="scG" aria-label="Aus der Galerie"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></button><input type="file" id="scF" accept="image/*" hidden><button class="shut" id="scS" aria-label="Foto"><svg viewBox="0 0 78 78"><circle cx="39" cy="39" r="36" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="4"/><circle class="p" id="scP" cx="39" cy="39" r="36" fill="none" stroke="#FFD60A" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 227"/></svg><i></i></button><div class="hint">Strichcode in den Rahmen halten<small>Er wird automatisch erkannt</small></div>
   <div class="res" id="scR"></div>
   <div class="err" id="scE"></div>
   <div class="bot"><div class="tray"><div class="tl" id="scL"></div><button class="fin" id="scF" disabled>Fertig – einräumen</button></div><div class="man" id="scM"><input id="scN" inputmode="numeric" placeholder="4012345678901" autocomplete="off"><button id="scG">OK</button></div>
@@ -321,8 +321,8 @@ var AMEAN=(function(){
     document.querySelector('#scan .top b').textContent=MULTI?'Einkauf scannen':m==='food'?'Essen erkennen':m==='shop'?'Einkauf erkennen':'Barcode scannen';
     document.querySelector('#scan .hint').innerHTML=m==='food'?'Teller ruhig halten – ich löse selbst aus<small>Mehrere Sachen auf einem Foto? Kein Problem</small>':m==='shop'?'Einkauf oder Kassenbon, von oben<small>Ich räume alles automatisch ein</small>':MULTI?'Ein Produkt nach dem anderen zeigen<small>Gleiches Produkt nochmal = +1</small>':'Strichcode in den Rahmen halten<small>Er wird automatisch erkannt</small>';}
   function shoot(){if(done||!stream)return;done=true;clearTimeout(timer);
-    var vw=V.videoWidth,vh=V.videoHeight,M=768,sc=Math.min(1,M/Math.max(vw,vh)),c=document.createElement('canvas');c.width=Math.round(vw*sc);c.height=Math.round(vh*sc);c.getContext('2d').drawImage(V,0,0,c.width,c.height);
-    var url=c.toDataURL('image/jpeg',.72);S.classList.add('snap','shot');document.getElementById('scZ').style.backgroundImage='url('+url+')';try{navigator.vibrate&&navigator.vibrate(25);}catch(e){}
+    var vw=V.videoWidth,vh=V.videoHeight,M=640,sc=Math.min(1,M/Math.max(vw,vh)),c=document.createElement('canvas');c.width=Math.round(vw*sc);c.height=Math.round(vh*sc);c.getContext('2d').drawImage(V,0,0,c.width,c.height);
+    var url=c.toDataURL('image/jpeg',.7);S.classList.add('snap','shot');document.getElementById('scZ').style.backgroundImage='url('+url+')';try{navigator.vibrate&&navigator.vibrate(25);}catch(e){}
     send({t:'shot',mode:MODE,b64:url.split(',')[1]});setTimeout(close,450);}
   function hit(code){
     code=String(code).replace(/\D/g,'');if(done||code.length<8)return;
@@ -348,6 +348,11 @@ var AMEAN=(function(){
   }
   document.getElementById('scX').onclick=close;
   document.getElementById('scS').onclick=function(){shoot();};
+  document.getElementById('scG').onclick=function(){clearTimeout(timer);document.getElementById('scF').click();window.addEventListener('focus',function f(){window.removeEventListener('focus',f);setTimeout(function(){if(!done&&stream)frame();},1500);});};
+  document.getElementById('scF').onchange=function(){var f=this.files&&this.files[0];this.value='';if(!f)return;var u=URL.createObjectURL(f),img=new Image();
+    img.onload=function(){var M=640,sc=Math.min(1,M/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
+      var url=c.toDataURL('image/jpeg',.7);done=true;clearTimeout(timer);document.getElementById('scZ').style.backgroundImage='url('+url+')';S.classList.add('snap','shot');send({t:'shot',mode:MODE,b64:url.split(',')[1]});setTimeout(close,350);};
+    img.onerror=function(){URL.revokeObjectURL(u);};img.src=u;};
   document.querySelectorAll('#scMo button').forEach(function(b){b.onclick=function(){setMode(b.dataset.m);};});
   document.getElementById('scF').onclick=function(){if(!ITEMS.length)return;var its=ITEMS.map(function(x){return{code:x.code,qty:x.qty,p:x.p};});var wait=ITEMS.some(function(x){return x.p===null&&x.name.indexOf('Code ')===0;});
     setTimeout(function(){send({t:'barcodes',items:ITEMS.map(function(x){return{code:x.code,qty:x.qty,p:x.p};})});close();},wait?700:0);};
