@@ -1,64 +1,63 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>AM Fit</title>
+<title>AM Properties</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="AM Fit">
-<meta name="application-name" content="AM Fit">
-<meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-title" content="AM Properties">
+<meta name="application-name" content="AM Properties">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17201D" media="(prefers-color-scheme: dark)">
 <meta name="robots" content="noindex, nofollow">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="manifest" href="manifest.json">
 <style>
-  :root{--bg:#F6F6F3;--ink:#141414;--soft:#8C8C86;--line:#E7E7E2;--brand:#141414}
-  @media (prefers-color-scheme:dark){:root{--bg:#0F0F0F;--ink:#F3F3F0;--soft:#8E8E89;--line:#262626;--brand:#F3F3F0}}
-  
+  :root{--bg:#FFFFFF;--ink:#14231F;--soft:#6B726C;--line:#E7E2D6;--brand:#0F4C43}
+  @media (prefers-color-scheme:dark){:root{--bg:#17201D;--ink:#EEF1EC;--soft:#9AA39D;--line:#25302C;--brand:#5CC2AE}}
   html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
   iframe{position:fixed;inset:0;width:100%;height:100%;border:0;display:block;background:transparent;opacity:0;transition:opacity .35s}
   iframe.on{opacity:1}
   .splash,.setup{position:fixed;inset:0;display:grid;place-items:center;padding:24px;text-align:center}
-  .splash img,.setup img{width:84px;height:84px;border-radius:20px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
-  .splash b,.setup h1{display:block;font-family:'Inter Tight',-apple-system,'Helvetica Neue',sans-serif;font-size:26px;margin:14px 0 0;font-weight:600;letter-spacing:-.6px}
+  .splash img,.setup img{width:84px;height:84px;border-radius:20px;box-shadow:0 12px 30px rgba(15,76,67,.28)}
+  .splash b,.setup h1{display:block;font-family:'Times New Roman',Times,'Liberation Serif',serif;font-size:26px;margin:14px 0 0;font-weight:700;letter-spacing:-.3px}
   .spin{width:24px;height:24px;border:3px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:s 1s linear infinite;margin:18px auto 0}
   @keyframes s{to{transform:rotate(360deg)}}
   .setup{display:none}.setup.on{display:grid}.splash.off{display:none}
   .setup p{color:var(--soft);max-width:330px;margin:8px auto 18px}
   .setup input{width:100%;max-width:360px;box-sizing:border-box;font:inherit;font-size:16px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:transparent;color:var(--ink)}
-  .setup button{width:100%;max-width:360px;margin-top:12px;border:0;border-radius:14px;padding:14px;font:inherit;font-weight:700;font-size:16px;background:var(--brand);color:var(--bg)}
+  .setup button{width:100%;max-width:360px;margin-top:12px;border:0;border-radius:14px;padding:14px;font:inherit;font-weight:700;font-size:16px;background:var(--brand);color:#fff}
   .setup .err{color:#B5412E;font-size:13px;min-height:18px;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="splash" id="splash"><div><img src="apple-touch-icon.png" alt=""><b>AM Fit</b><div class="spin"></div></div></div>
+<div class="splash" id="splash"><div><img src="apple-touch-icon.png" alt=""><b>AM Properties</b><div class="spin"></div></div></div>
 <div class="setup" id="setup"><div>
   <img src="apple-touch-icon.png" alt="">
-  <h1>App einrichten</h1>
-  <p>Füge einmalig den Link deiner Google-Web-App ein (endet auf <b>/exec</b>).</p>
+  <h1>Configura tu app</h1>
+  <p>Pega una sola vez el enlace de tu aplicación web de Google (termina en <b>/exec</b>).</p>
   <input id="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec">
-  <button id="save">Speichern & öffnen</button>
+  <button id="save">Guardar y abrir</button>
   <div class="err" id="err"></div>
 </div></div>
 <script>
 (function(){
-  var KEY='amfit_app_url', RE=/^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+|macros)\/s\/[\w-]+\/exec$/;
+  var KEY='am_app_url', RE=/^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+|macros)\/s\/[\w-]+\/exec$/;
   function get(){try{return localStorage.getItem(KEY)||'';}catch(e){return '';}}
   function set(v){try{localStorage.setItem(KEY,v);}catch(e){}}
   function open(u){
     var f=document.createElement('iframe');
-    f.src=u; f.setAttribute('allow','clipboard-write; camera');
+    f.src=u; f.setAttribute('allow','clipboard-write');
     f.onload=function(){f.classList.add('on');setTimeout(function(){document.getElementById('splash').classList.add('off');},400);};
     document.body.appendChild(f);
   }
   function setup(){document.getElementById('splash').classList.add('off');document.getElementById('setup').classList.add('on');}
   document.getElementById('save').onclick=function(){
     var v=document.getElementById('url').value.trim().replace(/\?.*$/,'');
-    if(!RE.test(v)){document.getElementById('err').textContent='Der Link stimmt nicht. Er muss mit https://script.google.com beginnen und auf /exec enden.';return;}
+    if(!RE.test(v)){document.getElementById('err').textContent='Ese enlace no parece correcto. Debe empezar por https://script.google.com y terminar en /exec';return;}
     set(v);document.getElementById('setup').classList.remove('on');document.getElementById('splash').classList.remove('off');open(v);
   };
   if(/[?&]reset=1/.test(location.search)){try{localStorage.removeItem(KEY);}catch(e){}}
@@ -66,7 +65,7 @@
 })();
 </script>
 <style>
-:root{--fidbg:#141414;--fidfg:#fff;--fidcard:#FFFFFF;--fidink:#141414;--fidmut:#8C8C86;--fidmsg:#141414}@media (prefers-color-scheme:dark){:root{--fidbg:#F3F3F0;--fidfg:#0F0F0F;--fidcard:#1C1C1C;--fidink:#F3F3F0;--fidmut:#8E8E89;--fidmsg:#F3F3F0}}
+:root{--fidbg:#0F4C43;--fidfg:#fff;--fidcard:#FFFFFF;--fidink:#14231F;--fidmut:#6B726C;--fidmsg:#14231F}@media (prefers-color-scheme:dark){:root{--fidbg:#5CC2AE;--fidfg:#0B1512;--fidcard:#1F2A26;--fidink:#EEF1EC;--fidmut:#9AA39D;--fidmsg:#EEF1EC}}
 #fid{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);display:none;justify-content:center;z-index:20;padding:0 16px;pointer-events:none}
 #fid.on{display:flex}
 #fid .box{pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:8px;max-width:360px;width:100%}
@@ -82,7 +81,7 @@
 <div id="fid"><div class="box" id="fidbox"></div></div>
 <script>
 (function(){
-  var T={"unlock": "Mit Face ID entsperren", "askTitle": "Face ID benutzen?", "askText": "Beim nächsten Mal öffnest du die App mit Face ID statt PIN.", "yes": "Face ID einschalten", "no": "Jetzt nicht", "on": "Face ID ist an ✓", "cancel": "Face ID abgebrochen", "noSupport": "Face ID geht hier nicht (iOS 18 und iCloud-Schlüsselbund nötig)", "reset": "PIN geändert: einmal eingeben, dann Face ID neu einschalten"}, APP="AM Fit", K='amfit_app_url_fid', NO='amfit_app_url_fid_no';
+  var T={"unlock": "Desbloquear con Face ID", "askTitle": "¿Usar Face ID?", "askText": "La próxima vez abres la app con Face ID en lugar del PIN.", "yes": "Activar Face ID", "no": "Ahora no", "on": "Face ID activado ✓", "cancel": "Face ID cancelado", "noSupport": "Face ID no disponible aquí (hace falta iOS 18 y Llavero de iCloud)", "reset": "PIN cambiado: introdúcelo una vez y vuelve a activar Face ID"}, APP="AM Properties", K='am_app_url_fid', NO='am_app_url_fid_no';
   var FACE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9.5v1M15 9.5v1M12 9v4.5h-1M9.5 16c1.5 1 3.5 1 5 0"/></svg>';
   var inner=null, origin=null, pending=null, tried=false, busy=false;
   var box=document.getElementById('fidbox'), wrap=document.getElementById('fid');
@@ -144,224 +143,6 @@
     else if(t==='pinfail'){ls(K,null);flash(T.reset);}
   });
   document.addEventListener('visibilitychange',function(){if(!document.hidden)tried=false;});
-})();
-</script>
-
-
-<!-- ===== Live-Barcode-Scanner ===== -->
-<style>
-#scan{position:fixed;inset:0;z-index:40;background:#000;display:none;color:#fff;font:15px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-user-select:none;user-select:none;overflow:hidden}
-#scan.on{display:block;animation:scIn .25s ease}
-@keyframes scIn{from{opacity:0}to{opacity:1}}
-#scan video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
-#scan .win{position:absolute;left:50%;top:42%;width:min(82vw,360px);height:min(46vw,200px);transform:translate(-50%,-50%);border-radius:24px;box-shadow:0 0 0 200vmax rgba(0,0,0,.6);transition:box-shadow .25s}
-#scan .wm{position:absolute;left:12%;right:12%;top:20%;bottom:16%;opacity:.22;transition:opacity .3s}
-#scan .wm svg{width:100%;height:100%;display:block}
-#scan .cn{position:absolute;width:30px;height:30px;border:4px solid #fff;border-radius:3px}
-#scan .cn.a{left:-2px;top:-2px;border-right:0;border-bottom:0;border-top-left-radius:24px}
-#scan .cn.b{right:-2px;top:-2px;border-left:0;border-bottom:0;border-top-right-radius:24px}
-#scan .cn.c{left:-2px;bottom:-2px;border-right:0;border-top:0;border-bottom-left-radius:24px}
-#scan .cn.d{right:-2px;bottom:-2px;border-left:0;border-top:0;border-bottom-right-radius:24px}
-#scan .lz{position:absolute;left:7%;right:7%;top:50%;height:2px;border-radius:2px;background:#FF5A4F;box-shadow:0 0 14px 3px rgba(255,90,79,.65);animation:scLz 1.7s ease-in-out infinite}
-@keyframes scLz{0%,100%{transform:translateY(-38px);opacity:.75}50%{transform:translateY(38px);opacity:1}}
-#scan.ok .win{box-shadow:0 0 0 200vmax rgba(0,0,0,.72),inset 0 0 0 4px #3DDC84}
-#scan.ok .cn{border-color:#3DDC84}#scan.ok .lz{display:none}#scan.ok .wm{opacity:0}
-#scan .chk{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:#3DDC84;display:grid;place-items:center;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
-#scan.ok .chk{transform:scale(1)}#scan .chk svg{width:34px;height:34px}
-#scan .top{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 10px;display:flex;align-items:center;justify-content:space-between}
-#scan .top b{font-size:17px;font-weight:600}
-#scan .rb{width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;display:grid;place-items:center;padding:0;cursor:pointer}
-#scan .rb svg{width:20px;height:20px}#scan .rb.on{background:#fff;color:#000}#scan .rb.hide{visibility:hidden}
-#scan .hint{position:absolute;left:24px;right:24px;top:calc(42% + min(23vw,100px) + 26px);text-align:center;font-weight:600;font-size:16px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
-#scan .hint small{display:block;font-weight:400;font-size:13px;opacity:.75;margin-top:4px}
-#scan .bot{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);display:flex;flex-direction:column;align-items:center;gap:10px}
-#scan .pill{border:0;border-radius:999px;padding:13px 22px;font:600 15px -apple-system,sans-serif;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;cursor:pointer}
-#scan .man{display:none;width:100%;max-width:380px;gap:8px}
-#scan .man.on{display:flex}
-#scan .man input{flex:1;min-width:0;font:inherit;font-size:17px;padding:13px 14px;border-radius:14px;border:0;background:rgba(255,255,255,.95);color:#000;letter-spacing:.06em}
-#scan .man button{border:0;border-radius:14px;padding:0 18px;font:600 15px -apple-system,sans-serif;background:#3DDC84;color:#04210F}
-#scan .res{position:absolute;left:50%;top:calc(42% + min(23vw,100px) + 22px);transform:translateX(-50%);background:#fff;color:#000;border-radius:16px;padding:10px 16px;font-weight:600;max-width:84vw;text-align:center;opacity:0;transition:opacity .2s}
-#scan.ok .res{opacity:1}#scan.ok .hint{opacity:0}
-#scan .tray{display:none;width:100%;max-width:420px;background:rgba(20,20,20,.72);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-radius:20px;padding:12px;box-sizing:border-box}
-#scan.multi .tray{display:block}#scan.multi #scK{display:none!important}
-#scan .tray .tl{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;min-height:36px;align-items:center}#scan .tray .tl::-webkit-scrollbar{display:none}
-#scan .tray .tl:empty:before{content:"Noch nichts gescannt – einfach nacheinander die Strichcodes zeigen";font-size:13px;opacity:.7}
-#scan .chip{flex:none;background:rgba(255,255,255,.14);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;animation:scChip .35s cubic-bezier(.3,1.5,.5,1)}
-#scan .chip i{font-style:normal;color:#3DDC84;margin-right:4px}
-@keyframes scChip{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
-#scan .fin{width:100%;margin-top:10px;border:0;border-radius:14px;padding:14px;font:700 16px -apple-system,sans-serif;background:#3DDC84;color:#04210F}
-#scan .fin:disabled{background:rgba(255,255,255,.18);color:rgba(255,255,255,.6)}
-#scan.flash .win{box-shadow:0 0 0 200vmax rgba(0,0,0,.6),inset 0 0 0 4px #3DDC84}
-#scan .modes{position:absolute;left:50%;transform:translateX(-50%);padding:6px 16px;border-radius:999px;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);display:flex;justify-content:center;gap:22px;font:600 13.5px -apple-system,sans-serif;letter-spacing:.06em;text-transform:uppercase}
-#scan .modes button{border:0;background:none;color:rgba(255,255,255,.75);padding:6px 2px;font:inherit;letter-spacing:inherit}
-#scan .modes button.on{color:#FFD60A}
-#scan .shut{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 36px);width:78px;height:78px;margin-left:-39px;border-radius:50%;border:0;padding:0;background:none;display:none}
-#scan .shut i{position:absolute;inset:9px;border-radius:50%;background:#fff;transition:transform .12s}
-#scan .shut:active i{transform:scale(.9)}
-#scan .shut svg{position:absolute;inset:0;width:78px;height:78px;transform:rotate(-90deg)}
-#scan .shut circle.p{transition:stroke-dasharray .1s linear}
-#scan .gal{position:absolute;left:calc(50% - 128px);bottom:calc(env(safe-area-inset-bottom,0px) + 47px);width:56px;height:56px;border-radius:16px;border:0;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);display:none;padding:15px}#scan .gal svg{width:26px;height:26px;display:block}#scan.photo .gal{display:block}#scan.photo .shut{display:block}#scan.photo .win{display:none}#scan.photo #scK{display:none!important}#scan.photo .hint{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 178px);left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:86vw;padding:9px 16px;border-radius:16px;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:14.5px}
-#scan .frz{position:absolute;inset:0;background:#000 center/cover no-repeat;display:none}
-#scan.shot .frz{display:block}#scan.shot .frz:after{content:"";position:absolute;left:0;right:0;top:-30%;height:30%;background:linear-gradient(180deg,transparent,rgba(255,255,255,.45),transparent);animation:scY 1.1s ease-in-out infinite}
-@keyframes scY{to{top:100%}}
-#scan .flashw{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
-#scan.snap .flashw{animation:scF .35s ease}@keyframes scF{0%{opacity:.85}100%{opacity:0}}
-#scan .err{position:absolute;left:24px;right:24px;top:40%;text-align:center;display:none}
-#scan.bad .err{display:block}#scan.bad .win,#scan.bad .hint{display:none}
-</style>
-<div id="scan" aria-modal="true" role="dialog" aria-label="Barcode scannen">
-  <video playsinline muted autoplay></video>
-  <div class="win"><div class="wm"><svg viewBox="0 0 142 72" preserveAspectRatio="none" aria-hidden="true"><g fill="#fff"><rect x="0" y="0" width="2" height="60"/><rect x="4" y="0" width="4" height="60"/><rect x="10" y="0" width="6" height="60"/><rect x="18" y="0" width="2" height="60"/><rect x="24" y="0" width="4" height="60"/><rect x="30" y="0" width="2" height="60"/><rect x="38" y="0" width="2" height="60"/><rect x="44" y="0" width="2" height="60"/><rect x="48" y="0" width="4" height="60"/><rect x="54" y="0" width="6" height="60"/><rect x="62" y="0" width="2" height="60"/><rect x="68" y="0" width="2" height="60"/><rect x="72" y="0" width="4" height="60"/><rect x="80" y="0" width="2" height="60"/><rect x="88" y="0" width="2" height="60"/><rect x="92" y="0" width="4" height="60"/><rect x="98" y="0" width="2" height="60"/><rect x="106" y="0" width="4" height="60"/><rect x="112" y="0" width="2" height="60"/><rect x="118" y="0" width="2" height="60"/><rect x="122" y="0" width="6" height="60"/><rect x="130" y="0" width="4" height="60"/><rect x="136" y="0" width="2" height="60"/></g><g fill="#fff" font-family="-apple-system,sans-serif" font-size="9" text-anchor="middle"><text x="71" y="71">4 006381 333931</text></g></svg></div><i class="cn a"></i><i class="cn b"></i><i class="cn c"></i><i class="cn d"></i><i class="lz"></i>
-    <div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#04210F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div></div>
-  <div class="top"><button class="rb" id="scX" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <b>Barcode scannen</b>
-    <button class="rb hide" id="scT" aria-label="Licht"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l-1 6h-4zM10 8h4v3l-1 11h-2l-1-11z"/></svg></button></div>
-  <div class="frz" id="scZ"></div><div class="flashw"></div><div class="modes" id="scMo"><button data-m="food">Essen</button><button data-m="shop">Einkauf</button><button data-m="code">Barcode</button></div><button class="gal" id="scG" aria-label="Aus der Galerie"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></button><input type="file" id="scF" accept="image/*" hidden><button class="shut" id="scS" aria-label="Foto"><svg viewBox="0 0 78 78"><circle cx="39" cy="39" r="36" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="4"/><circle class="p" id="scP" cx="39" cy="39" r="36" fill="none" stroke="#FFD60A" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 227"/></svg><i></i></button><div class="hint">Strichcode in den Rahmen halten<small>Er wird automatisch erkannt</small></div>
-  <div class="res" id="scR"></div>
-  <div class="err" id="scE"></div>
-  <div class="bot"><div class="tray"><div class="tl" id="scL"></div><button class="fin" id="scF" disabled>Fertig – einräumen</button></div><div class="man" id="scM"><input id="scN" inputmode="numeric" placeholder="4012345678901" autocomplete="off"><button id="scG">OK</button></div>
-    <button class="pill" id="scK">Nummer eintippen</button></div>
-</div>
-<script>
-/* Kleiner, schneller EAN-13/EAN-8-Leser (ohne fremde Bibliothek) */
-var AMEAN=(function(){
-  var L=[[3,2,1,1],[2,2,2,1],[2,1,2,2],[1,4,1,1],[1,1,3,2],[1,2,3,1],[1,1,1,4],[1,3,1,2],[1,2,1,3],[3,1,1,2]];
-  var G=L.map(function(p){return p.slice().reverse();});
-  var PAR=['LLLLLL','LLGLGG','LLGGLG','LLGGGL','LGLLGG','LGGLLG','LGGGLL','LGLGLG','LGLGGL','LGGLGL'];
-  function best(r,o,tabs){var s=r[o]+r[o+1]+r[o+2]+r[o+3];if(!s)return null;var m=[r[o]*7/s,r[o+1]*7/s,r[o+2]*7/s,r[o+3]*7/s],b=null;
-    for(var t=0;t<tabs.length;t++)for(var d=0;d<10;d++){var p=tabs[t][1][d],e=Math.abs(m[0]-p[0])+Math.abs(m[1]-p[1])+Math.abs(m[2]-p[2])+Math.abs(m[3]-p[3]);
-      if(!b||e<b.e){b={e:e,d:d,k:tabs[t][0],e2:b?b.e:9};}else if(e<b.e2)b.e2=e;}
-    return b&&b.e<1.7?b:null;}
-  function guard(r,o,n,mod){for(var i=0;i<n;i++){var x=r[o+i]/mod;if(x<.45||x>1.9)return false;}return true;}
-  function ck(ds){var s=0;for(var i=0;i<ds.length-1;i++)s+=ds[i]*((ds.length-1-i)%2?3:1);return (10-s%10)%10===ds[ds.length-1];}
-  function try13(r,i){ // r[i] = erster Strich (dunkel)
-    if(i+59>r.length)return null;var tot=0;for(var k=0;k<59;k++)tot+=r[i+k];var mod=tot/95;
-    if(!guard(r,i,3,mod)||!guard(r,i+27,5,mod)||!guard(r,i+56,3,mod))return null;
-    if(i>0&&r[i-1]<mod*3)return null;
-    var ds=[],par='';
-    for(var d=0;d<6;d++){var b=best(r,i+3+d*4,[['L',L],['G',G]]);if(!b)return null;ds.push(b.d);par+=b.k;}
-    for(d=0;d<6;d++){var b2=best(r,i+32+d*4,[['R',L]]);if(!b2)return null;ds.push(b2.d);}
-    var f=PAR.indexOf(par);if(f<0)return null;ds.unshift(f);
-    return ck(ds)?ds.join(''):null;}
-  function try8(r,i){
-    if(i+43>r.length)return null;var tot=0;for(var k=0;k<43;k++)tot+=r[i+k];var mod=tot/67;
-    if(!guard(r,i,3,mod)||!guard(r,i+19,5,mod)||!guard(r,i+40,3,mod))return null;
-    if(i>0&&r[i-1]<mod*3)return null;
-    var ds=[];for(var d=0;d<4;d++){var b=best(r,i+3+d*4,[['L',L]]);if(!b)return null;ds.push(b.d);}
-    for(d=0;d<4;d++){var b2=best(r,i+24+d*4,[['R',L]]);if(!b2)return null;ds.push(b2.d);}
-    return ck(ds)?ds.join(''):null;}
-  function runs(row){ // row: Uint8 Grauwerte → Lauflängen ab erstem dunklen Pixel
-    var n=row.length,mn=255,mx=0,i;for(i=0;i<n;i++){if(row[i]<mn)mn=row[i];if(row[i]>mx)mx=row[i];}
-    if(mx-mn<40)return null;var mid=(mn+mx)/2,w=Math.max(12,n>>4),pre=new Float64Array(n+1);
-    for(i=0;i<n;i++)pre[i+1]=pre[i]+row[i];
-    var out=[],cols=[],cur=-1,len=0;
-    for(i=0;i<n;i++){var a=Math.max(0,i-w),b=Math.min(n,i+w),lm=(pre[b]-pre[a])/(b-a),th=(lm+mid)/2,c=row[i]<th?1:0;
-      if(c===cur)len++;else{if(cur>=0){out.push(len);cols.push(cur);}cur=c;len=1;}}
-    out.push(len);cols.push(cur);return{r:out,c:cols};}
-  function scanRow(row){var R=runs(row);if(!R)return null;
-    for(var dir=0;dir<2;dir++){var r=dir?R.r.slice().reverse():R.r,c=dir?R.c.slice().reverse():R.c;
-      for(var i=0;i<r.length;i++){if(c[i]!==1)continue;var x=try13(r,i)||try8(r,i);if(x)return x;}}
-    return null;}
-  // Grauwert-Bild (Uint8ClampedArray RGBA, w, h) → Code oder null; prüft mehrere Zeilen
-  function scan(data,w,h,lines){lines=lines||11;var row=new Uint8Array(w),seen={};
-    for(var l=0;l<lines;l++){var y=Math.round(h*(0.15+0.7*l/(lines-1))),o=y*w*4;
-      for(var x=0;x<w;x++){var p=o+x*4;row[x]=(data[p]*77+data[p+1]*150+data[p+2]*29)>>8;}
-      var res=scanRow(row);if(res){seen[res]=(seen[res]||0)+1;if(seen[res]>=2)return res;}}
-    var k=Object.keys(seen);return k.length===1?k[0]:null;}
-  return{scan:scan,scanRow:scanRow};
-})();
-
-(function(){
-  var S=document.getElementById('scan'),V=S.querySelector('video'),R=document.getElementById('scR'),E=document.getElementById('scE');
-  var MODE='code',steady=0,prevSm=null,sm=document.createElement('canvas'),MULTI=false,ITEMS=[],SEEN={},src=null,origin=null,stream=null,timer=0,done=false,det=null,zx=null,zxHints=null,tries=0,cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true}),track=null,torch=false;
-  function send(m){if(src&&origin){m.am=1;try{src.postMessage(m,origin);}catch(e){}}}
-  if('BarcodeDetector' in window){try{BarcodeDetector.getSupportedFormats().then(function(f){if(f.indexOf('ean_13')>=0)det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']});}).catch(function(){});}catch(e){}}
-  function loadZX(){if(zx||window.__zxl)return;window.__zxl=1;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';s.async=true;
-    s.onload=function(){try{var Z=window.ZXing;zxHints=new Map();zxHints.set(Z.DecodeHintType.POSSIBLE_FORMATS,[Z.BarcodeFormat.EAN_13,Z.BarcodeFormat.EAN_8,Z.BarcodeFormat.UPC_A,Z.BarcodeFormat.UPC_E]);zxHints.set(Z.DecodeHintType.TRY_HARDER,true);zx=new Z.MultiFormatReader();zx.setHints(zxHints);}catch(e){zx=null;}};
-    document.head.appendChild(s);}
-  setTimeout(loadZX,4000);
-  function stop(){clearTimeout(timer);if(stream){stream.getTracks().forEach(function(t){t.stop();});}stream=null;track=null;V.srcObject=null;}
-  function close(){stop();S.className='';}
-  function frame(){
-    if(done||!stream)return;
-    var vw=V.videoWidth,vh=V.videoHeight;
-    if(vw&&vh){
-      var sx=Math.round(vw*.04),sw=vw-2*sx,sy=Math.round(vh*.28),sh=Math.round(vh*.34),tw=Math.min(900,sw),th=Math.round(sh*tw/sw);
-      if(cv.width!==tw||cv.height!==th){cv.width=tw;cv.height=th;}
-      cx.drawImage(V,sx,sy,sw,sh,0,0,tw,th);
-      var code=null;try{code=AMEAN.scan(cx.getImageData(0,0,tw,th).data,tw,th,13);}catch(e){}
-      if(!code&&zx&&(++tries%2===0)){try{var Z=window.ZXing,r=zx.decode(new Z.BinaryBitmap(new Z.HybridBinarizer(new Z.HTMLCanvasElementLuminanceSource(cv))),zxHints);if(r)code=r.getText();}catch(e){}}
-      if(code){hit(code);if(!MULTI)return;}
-      if(MODE!=='code'&&!done){try{sm.width=24;sm.height=24;var g=sm.getContext('2d',{willReadFrequently:true});g.drawImage(V,0,0,24,24);var px=g.getImageData(0,0,24,24).data,cur=new Uint8Array(576),lum=0,df=0;
-        for(var q=0;q<576;q++){cur[q]=(px[q*4]+px[q*4+1]+px[q*4+2])/3|0;lum+=cur[q];if(prevSm)df+=Math.abs(cur[q]-prevSm[q]);}prevSm=cur;lum/=576;df/=576;
-        steady=(prevSm&&df<5.5&&lum>35)?steady+1:0;var P=document.getElementById('scP');P.setAttribute('stroke-dasharray',(Math.min(1,steady/9)*226).toFixed(0)+' 227');
-        if(steady>=9)return shoot();}catch(e){}}
-      if(det){det.detect(V).then(function(b){if(b&&b.length&&!done)hit(b[0].rawValue);}).catch(function(){});}
-    }
-    timer=setTimeout(frame,70);
-  }
-  function look(code){
-    var ctl=window.AbortController?new AbortController():null,to=setTimeout(function(){ctl&&ctl.abort();},3500);
-    return fetch('https://world.openfoodfacts.org/api/v2/product/'+code+'.json?fields=code,product_name,product_name_de,brands,nutriments,serving_quantity,quantity,categories_tags,image_front_small_url,image_small_url',ctl?{signal:ctl.signal}:{})
-      .then(function(r){return r.json();}).then(function(j){clearTimeout(to);return j&&j.status===1?j.product:null;}).catch(function(){clearTimeout(to);return null;});}
-  function pname(p,code){return p?(p.product_name_de||p.product_name||'Produkt')+(p.brands?' · '+String(p.brands).split(',')[0]:''):'Code '+code;}
-  function drawTray(){var L=document.getElementById('scL');L.innerHTML='';ITEMS.slice().reverse().forEach(function(x){var c=document.createElement('span');c.className='chip';c.innerHTML='<i>'+(x.qty>1?x.qty+'×':'✓')+'</i>';c.appendChild(document.createTextNode(x.name));L.appendChild(c);});
-    var F=document.getElementById('scF'),n=ITEMS.reduce(function(a,x){return a+x.qty;},0);F.disabled=!n;F.textContent=n?'Fertig – '+n+' Produkt'+(n>1?'e':'')+' einräumen':'Fertig – einräumen';}
-  function hitMulti(code){
-    var now=Date.now(),prev=SEEN[code]||0;SEEN[code]=now;if(now-prev<1600)return;   // erst wieder zählen, wenn der Code kurz weg war
-    try{navigator.vibrate&&navigator.vibrate(30);}catch(e){}
-    S.classList.add('flash');setTimeout(function(){S.classList.remove('flash');},350);
-    var ex=ITEMS.find(function(x){return x.code===code;});
-    if(ex){ex.qty++;drawTray();return;}
-    var it={code:code,qty:1,name:'Code '+code,p:null};ITEMS.push(it);drawTray();
-    look(code).then(function(p){it.p=p;it.name=pname(p,code);drawTray();});
-  }
-  function setMode(m){MODE=m;steady=0;prevSm=null;S.classList.toggle('photo',m!=='code');
-    document.querySelectorAll('#scMo button').forEach(function(b){b.classList.toggle('on',b.dataset.m===m);});
-    document.querySelector('#scan .top b').textContent=MULTI?'Einkauf scannen':m==='food'?'Essen erkennen':m==='shop'?'Einkauf erkennen':'Barcode scannen';
-    document.querySelector('#scan .hint').innerHTML=m==='food'?'Teller ruhig halten – ich löse selbst aus<small>Mehrere Sachen auf einem Foto? Kein Problem</small>':m==='shop'?'Einkauf oder Kassenbon, von oben<small>Ich räume alles automatisch ein</small>':MULTI?'Ein Produkt nach dem anderen zeigen<small>Gleiches Produkt nochmal = +1</small>':'Strichcode in den Rahmen halten<small>Er wird automatisch erkannt</small>';}
-  function shoot(){if(done||!stream)return;done=true;clearTimeout(timer);
-    var vw=V.videoWidth,vh=V.videoHeight,M=640,sc=Math.min(1,M/Math.max(vw,vh)),c=document.createElement('canvas');c.width=Math.round(vw*sc);c.height=Math.round(vh*sc);c.getContext('2d').drawImage(V,0,0,c.width,c.height);
-    var url=c.toDataURL('image/jpeg',.7);S.classList.add('snap','shot');document.getElementById('scZ').style.backgroundImage='url('+url+')';try{navigator.vibrate&&navigator.vibrate(25);}catch(e){}
-    send({t:'shot',mode:MODE,b64:url.split(',')[1]});setTimeout(close,450);}
-  function hit(code){
-    code=String(code).replace(/\D/g,'');if(done||code.length<8)return;
-    if(code.length===12)code='0'+code;
-    if(MULTI){hitMulti(code);return;}
-    done=true;
-    S.classList.add('ok');R.textContent='Erkannt · '+code;try{navigator.vibrate&&navigator.vibrate(35);}catch(e){}
-    clearTimeout(timer);var t0=Date.now();
-    look(code).then(function(p){if(p)R.textContent=pname(p,code);
-        setTimeout(function(){send({t:'barcode',code:code,p:p});close();},Math.max(0,550-(Date.now()-t0)));});
-  }
-  async function start(multi,mode){
-    MULTI=!!multi;ITEMS=[];SEEN={};drawTray();
-    done=false;tries=0;S.className='on'+(MULTI?' multi':'');setMode(MULTI?'code':(mode||'code'));document.getElementById('scMo').style.display=MULTI?'none':'';R.textContent='';document.getElementById('scM').classList.remove('on');document.getElementById('scK').style.display='';
-    loadZX();
-    try{stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}});}
-    catch(e){S.classList.add('bad');E.innerHTML='<b>Kamera nicht erlaubt</b><br><small>Erlaube den Kamerazugriff (Einstellungen → Safari → Kamera) – oder tippe die Nummer unten ein.</small>';return;}
-    if(!S.classList.contains('on')){stop();return;}
-    V.srcObject=stream;try{await V.play();}catch(e){}
-    track=stream.getVideoTracks()[0];var T=document.getElementById('scT');T.classList.add('hide');T.classList.remove('on');torch=false;
-    try{var c=track.getCapabilities&&track.getCapabilities();if(c&&c.torch)T.classList.remove('hide');if(c&&c.focusMode&&c.focusMode.indexOf('continuous')>=0)track.applyConstraints({advanced:[{focusMode:'continuous'}]}).catch(function(){});}catch(e){}
-    frame();
-  }
-  document.getElementById('scX').onclick=close;
-  document.getElementById('scS').onclick=function(){shoot();};
-  document.getElementById('scG').onclick=function(){clearTimeout(timer);document.getElementById('scF').click();window.addEventListener('focus',function f(){window.removeEventListener('focus',f);setTimeout(function(){if(!done&&stream)frame();},1500);});};
-  document.getElementById('scF').onchange=function(){var f=this.files&&this.files[0];this.value='';if(!f)return;var u=URL.createObjectURL(f),img=new Image();
-    img.onload=function(){var M=640,sc=Math.min(1,M/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
-      var url=c.toDataURL('image/jpeg',.7);done=true;clearTimeout(timer);document.getElementById('scZ').style.backgroundImage='url('+url+')';S.classList.add('snap','shot');send({t:'shot',mode:MODE,b64:url.split(',')[1]});setTimeout(close,350);};
-    img.onerror=function(){URL.revokeObjectURL(u);};img.src=u;};
-  document.querySelectorAll('#scMo button').forEach(function(b){b.onclick=function(){setMode(b.dataset.m);};});
-  document.getElementById('scF').onclick=function(){if(!ITEMS.length)return;var its=ITEMS.map(function(x){return{code:x.code,qty:x.qty,p:x.p};});var wait=ITEMS.some(function(x){return x.p===null&&x.name.indexOf('Code ')===0;});
-    setTimeout(function(){send({t:'barcodes',items:ITEMS.map(function(x){return{code:x.code,qty:x.qty,p:x.p};})});close();},wait?700:0);};
-  document.getElementById('scT').onclick=function(){if(!track)return;torch=!torch;this.classList.toggle('on',torch);track.applyConstraints({advanced:[{torch:torch}]}).catch(function(){});};
-  document.getElementById('scK').onclick=function(){document.getElementById('scM').classList.add('on');this.style.display='none';var n=document.getElementById('scN');n.value='';n.focus();};
-  document.getElementById('scG').onclick=function(){var v=document.getElementById('scN').value.replace(/\D/g,'');if(v.length>=8)hit(v);};
-  document.getElementById('scN').onkeydown=function(e){if(e.key==='Enter')document.getElementById('scG').click();};
-  window.addEventListener('message',function(e){if(!/\.googleusercontent\.com$/.test(e.origin)||!e.data||!e.data.am)return;
-    if(e.data.t==='scan'){src=e.source;origin=e.origin;start(e.data.multi,e.data.mode);}});
 })();
 </script>
 
